@@ -1,1 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Concierge | Get What You Need Fast</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0f172a;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #0f172a;
+      --text-soft: #334155;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --success: #16a34a;
+      --border: #e2e8f0;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+      --radius: 18px;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(145deg, #eff6ff, #f8fafc 45%, #eef2ff);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    .hero {
+      background: radial-gradient(circle at 15% 20%, #bfdbfe 0%, #dbeafe 35%, #f8fafc 75%);
+      border: 1px solid #cbd5e1;
+      border-radius: calc(var(--radius) + 4px);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .kicker {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 0.4rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+      max-width: 18ch;
+    }
+
+    .hero p {
+      color: var(--text-soft);
+      max-width: 60ch;
+      margin-bottom: 1rem;
+    }
+
+    .intent-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.75rem;
+    }
+
+    .intent-btn {
+      border: 1px solid #93c5fd;
+      background: #ffffffc7;
+      color: #1e3a8a;
+      padding: 0.6rem 0.95rem;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .intent-btn:hover {
+      transform: translateY(-2px);
+      background: #ffffff;
+    }
+
+    .intent-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      list-style: none;
+      margin-top: 0.85rem;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .actions li {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.65rem 0.75rem;
+      background: var(--surface-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      background: var(--accent-soft);
+      color: #1d4ed8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .assistant-form {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0.72rem 0.8rem;
+      font-size: 0.95rem;
+    }
+
+    button[type="submit"] {
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 0.72rem 0.9rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .assistant-response {
+      margin-top: 0.8rem;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 0.75rem;
+      color: #1e3a8a;
+      font-size: 0.92rem;
+      min-height: 72px;
+    }
+
+    .highlights {
+      display: grid;
+      gap: 0.55rem;
+      list-style: none;
+      margin-top: 0.75rem;
+    }
+
+    .highlights li {
+      border-left: 4px solid var(--success);
+      background: #f0fdf4;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      color: #14532d;
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 1rem;
+      text-align: center;
+      color: #475569;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero" aria-label="House concierge">
+      <span class="kicker">Instant Home Experience</span>
+      <h1>Everything a visitor wants, the second they arrive.</h1>
+      <p>
+        This concierge landing page detects intent and surfaces the right next step
+        immediately: tour booking, price guidance, financing, neighborhood insight,
+        and direct answers.
+      </p>
+      <div class="intent-row" role="group" aria-label="visitor intent">
+        <button class="intent-btn active" data-intent="tour">Book a Tour</button>
+        <button class="intent-btn" data-intent="price">Price & Value</button>
+        <button class="intent-btn" data-intent="finance">Mortgage Help</button>
+        <button class="intent-btn" data-intent="details">Property Details</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2 id="intent-heading">Best next steps for touring this home</h2>
+        <p id="intent-description">
+          Visitors can instantly claim a tour slot, request a live walkthrough, or ask for an open-house reminder.
+        </p>
+        <ul class="actions" id="action-list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Ask the House Concierge</h2>
+        <p>Type what you need and get directed to the exact part of the buying journey.</p>
+        <form class="assistant-form" id="assistant-form">
+          <input
+            id="assistant-input"
+            type="text"
+            maxlength="120"
+            placeholder="Example: Is this area good for families?"
+            required
+          >
+          <button type="submit">Ask</button>
+        </form>
+        <div class="assistant-response" id="assistant-response" aria-live="polite">
+          Share your goal, and this panel instantly routes you to the right info.
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Neighborhood Highlights</h2>
+        <p>Pre-loaded local value points users usually ask for first.</p>
+        <ul class="highlights">
+          <li>8-minute walk to top-rated elementary school.</li>
+          <li>Commute to downtown in 22 minutes by rail.</li>
+          <li>Grocery, gym, and pharmacy all within 0.6 miles.</li>
+          <li>Quiet street with low through-traffic after 7 PM.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Quick Facts Snapshot</h2>
+        <p>Core details most buyers ask before scrolling anywhere else.</p>
+        <ul class="actions">
+          <li><span>4 Bed · 3 Bath · 2,540 sqft</span><span class="badge">Layout</span></li>
+          <li><span>Estimated payment: $3,180/mo</span><span class="badge">Finance</span></li>
+          <li><span>Recent area growth: +9.2% YoY</span><span class="badge">Market</span></li>
+          <li><span>Next open house: Sat 1:00 PM</span><span class="badge">Schedule</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <footer>
+      Built as a launch-ready landing page prototype for a “get-what-I-need-now” home experience.
+    </footer>
+  </main>
+
+  <script>
+    const intentData = {
+      tour: {
+        heading: "Best next steps for touring this home",
+        description:
+          "Visitors can instantly claim a tour slot, request a live walkthrough, or ask for an open-house reminder.",
+        actions: [
+          { text: "Pick a private tour slot (today/tomorrow)", tag: "Fastest" },
+          { text: "Join a guided 3D virtual walk", tag: "Remote" },
+          { text: "Get SMS reminder for next open house", tag: "Popular" }
+        ]
+      },
+      price: {
+        heading: "Price confidence in under a minute",
+        description:
+          "Users can compare nearby sold homes, see appreciation trends, and request a strategy call.",
+        actions: [
+          { text: "Compare this home against 5 nearby sales", tag: "Data" },
+          { text: "See negotiation room estimate", tag: "AI insight" },
+          { text: "Download valuation report PDF", tag: "Report" }
+        ]
+      },
+      finance: {
+        heading: "Financing answers immediately",
+        description:
+          "Present loan scenarios, monthly payment estimates, and pre-approval options without leaving the page.",
+        actions: [
+          { text: "Try 15-year vs 30-year payment simulation", tag: "Calculator" },
+          { text: "Get lender match in 60 seconds", tag: "Instant" },
+          { text: "Start soft-credit pre-approval", tag: "No hard pull" }
+        ]
+      },
+      details: {
+        heading: "Property details users ask for first",
+        description:
+          "Offer floor plans, renovation history, utility costs, HOA details, and disclosure access at first click.",
+        actions: [
+          { text: "Open full floor plan with room dimensions", tag: "Layout" },
+          { text: "Review improvements and permit timeline", tag: "History" },
+          { text: "Check utility and maintenance estimates", tag: "Costs" }
+        ]
+      }
+    };
+
+    const quickAnswerRules = [
+      {
+        keywords: ["school", "family", "kids"],
+        response: "Family fit looks strong: top-rated schools nearby and multiple parks within a short walk."
+      },
+      {
+        keywords: ["payment", "mortgage", "loan", "finance"],
+        response: "For financing, start with the payment simulation and lender match actions in the Mortgage Help tab."
+      },
+      {
+        keywords: ["tour", "visit", "showing"],
+        response: "You can book the fastest private tour from the first recommended action under Book a Tour."
+      },
+      {
+        keywords: ["price", "value", "deal"],
+        response: "Open the Price & Value tab to compare recent sales and preview a negotiation-room estimate."
+      }
+    ];
+
+    const buttons = [...document.querySelectorAll(".intent-btn")];
+    const heading = document.getElementById("intent-heading");
+    const description = document.getElementById("intent-description");
+    const actionList = document.getElementById("action-list");
+    const assistantForm = document.getElementById("assistant-form");
+    const assistantInput = document.getElementById("assistant-input");
+    const assistantResponse = document.getElementById("assistant-response");
+
+    function renderIntent(intentKey) {
+      const intent = intentData[intentKey];
+      if (!intent) return;
+
+      heading.textContent = intent.heading;
+      description.textContent = intent.description;
+      actionList.innerHTML = intent.actions
+        .map(
+          (action) =>
+            `<li><span>${action.text}</span><span class="badge">${action.tag}</span></li>`
+        )
+        .join("");
+
+      buttons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.intent === intentKey);
+      });
+
+      localStorage.setItem("preferredIntent", intentKey);
+    }
+
+    function answerQuery(rawText) {
+      const text = rawText.toLowerCase();
+      const match = quickAnswerRules.find((rule) =>
+        rule.keywords.some((keyword) => text.includes(keyword))
+      );
+      if (match) return match.response;
+      return "Start with your closest goal above (Tour, Price, Mortgage, or Details) and this page will narrow the best path instantly.";
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        renderIntent(button.dataset.intent);
+      });
+    });
+
+    assistantForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const prompt = assistantInput.value.trim();
+      if (!prompt) return;
+      assistantResponse.textContent = answerQuery(prompt);
+      assistantInput.value = "";
+    });
+
+    const savedIntent = localStorage.getItem("preferredIntent");
+    if (savedIntent && intentData[savedIntent]) {
+      renderIntent(savedIntent);
+    } else {
+      renderIntent("tour");
+    }
+  </script>
+</body>
+</html>
