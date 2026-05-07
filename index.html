@@ -1,1 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homesight MVP | Real Listing Analysis</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #334155;
+      --surface: #ffffff;
+      --border: #d9e3f1;
+      --accent: #1d4ed8;
+      --accent-soft: #e0e7ff;
+      --radius: 16px;
+      --shadow: 0 10px 26px rgba(15, 23, 42, 0.11);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 0%, #dbeafe 0%, #f8fafc 40%, #edf2f7 100%);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .container {
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    .hero {
+      background: linear-gradient(160deg, #eef2ff 0%, #fff 45%, #eff6ff 100%);
+      border: 1px solid #c7d2e4;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 1.2rem;
+    }
+
+    .pill {
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1e3a8a;
+      background: #dbeafe;
+      border-radius: 999px;
+      padding: 0.32rem 0.6rem;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 2.9vw, 2.5rem);
+      line-height: 1.12;
+      max-width: 18ch;
+      margin-bottom: 0.55rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 66ch;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.95rem;
+    }
+
+    .card h2 {
+      font-size: 1.02rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .url-form {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.55rem;
+    }
+
+    input[type="url"] {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.72rem 0.8rem;
+      font-size: 0.95rem;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 12px;
+      padding: 0.72rem 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .muted-line {
+      margin-top: 0.55rem;
+      color: #64748b;
+      font-size: 0.83rem;
+    }
+
+    .mono {
+      margin-top: 0.5rem;
+      color: #1e3a8a;
+      font-size: 0.82rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      word-break: break-all;
+    }
+
+    .sub-list {
+      list-style: none;
+      margin-top: 0.7rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .sub-list li {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.6rem 0.68rem;
+      color: var(--muted);
+      font-size: 0.89rem;
+    }
+
+    .sub-cta {
+      margin-top: 0.75rem;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.62rem 0.72rem;
+      color: #3730a3;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .layout {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: 1.36fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .panel h3 {
+      font-size: 1.03rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.58rem;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #fbfdff;
+      padding: 0.68rem;
+    }
+
+    .metric-label {
+      color: #64748b;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .metric-value {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-top: 0.16rem;
+    }
+
+    .metric-meta {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: 0.25rem;
+    }
+
+    .list {
+      list-style: none;
+      margin-top: 0.8rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .list li {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f8fafc;
+      padding: 0.6rem 0.68rem;
+      color: var(--muted);
+    }
+
+    .facts {
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: grid;
+      gap: 0.42rem;
+    }
+
+    .facts strong {
+      color: #1e3a8a;
+      margin-right: 0.35rem;
+    }
+
+    footer {
+      margin-top: 1rem;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 950px) {
+      .hero-grid,
+      .layout,
+      .url-form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <span class="pill">US Buyer MVP · Real Data Wired</span>
+      <h1>Paste a listing URL and get an instant real-data analysis.</h1>
+      <p>
+        This MVP fetches live listing metadata, current 30-year mortgage rate,
+        and neighborhood context (OpenStreetMap + geocoding) to help serious
+        U.S. buyers evaluate listings quickly.
+      </p>
+
+      <div class="hero-grid">
+        <article class="card">
+          <h2>Analyze a listing URL</h2>
+          <p>Try Realtor, Zillow, Redfin, or another page with structured listing metadata.</p>
+          <form id="url-form" class="url-form">
+            <input id="listing-url" type="url" required placeholder="https://..." />
+            <button type="submit">Analyze Now</button>
+          </form>
+          <div class="muted-line" id="status-text">Ready for first analysis.</div>
+          <div class="mono" id="last-url">No URL analyzed yet.</div>
+        </article>
+
+        <article class="card">
+          <h2>Homesight Pro (B2C Subscription)</h2>
+          <p>For serious buyers comparing multiple homes and preparing offers.</p>
+          <ul class="sub-list">
+            <li>Unlimited URL analyses + saved comparisons</li>
+            <li>Live mortgage-rate and risk monitoring on tracked listings</li>
+            <li>Negotiation checklist with comp-driven recommendations</li>
+          </ul>
+          <div class="sub-cta">
+            <span>$29/mo after a 7-day trial</span>
+            <button type="button">Start Trial</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="layout">
+      <article class="panel">
+        <h3>Instant Analysis</h3>
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-label">Deal Score</div>
+            <div class="metric-value" id="deal-score">-- / 100</div>
+            <div class="metric-meta" id="coverage">Coverage: --</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Listed Price</div>
+            <div class="metric-value" id="listed-price">$--</div>
+            <div class="metric-meta" id="source-host">Source: --</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Live 30Y Mortgage</div>
+            <div class="metric-value" id="mortgage-rate">--%</div>
+            <div class="metric-meta" id="mortgage-date">FRED latest value</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Est. Monthly Payment</div>
+            <div class="metric-value" id="monthly-payment">$--</div>
+            <div class="metric-meta">80% financed, 30-year fixed</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Amenity Score</div>
+            <div class="metric-value" id="amenity-score">-- / 10</div>
+            <div class="metric-meta" id="amenity-counts">Schools/Parks/Transit: --</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Local Weather</div>
+            <div class="metric-value" id="weather">--</div>
+            <div class="metric-meta">Open-Meteo current conditions</div>
+          </div>
+        </div>
+
+        <div class="facts">
+          <div><strong>Title:</strong><span id="listing-title">--</span></div>
+          <div><strong>Address:</strong><span id="listing-address">--</span></div>
+          <div><strong>Beds/Baths/Sqft:</strong><span id="home-facts">--</span></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h3>Risk Flags</h3>
+        <ul class="list" id="risk-flags">
+          <li>Analyze a listing URL to populate risk flags.</li>
+        </ul>
+
+        <h3 style="margin-top:0.85rem;">Recommended Actions</h3>
+        <ul class="list" id="actions">
+          <li>Actions appear after successful analysis.</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer>Homesight MVP: real URL extraction + live signal enrichment.</footer>
+  </main>
+
+  <script>
+    const form = document.getElementById("url-form");
+    const input = document.getElementById("listing-url");
+    const statusText = document.getElementById("status-text");
+    const lastUrl = document.getElementById("last-url");
+
+    const dealScore = document.getElementById("deal-score");
+    const coverage = document.getElementById("coverage");
+    const listedPrice = document.getElementById("listed-price");
+    const sourceHost = document.getElementById("source-host");
+    const mortgageRate = document.getElementById("mortgage-rate");
+    const mortgageDate = document.getElementById("mortgage-date");
+    const monthlyPayment = document.getElementById("monthly-payment");
+    const amenityScore = document.getElementById("amenity-score");
+    const amenityCounts = document.getElementById("amenity-counts");
+    const weather = document.getElementById("weather");
+    const listingTitle = document.getElementById("listing-title");
+    const listingAddress = document.getElementById("listing-address");
+    const homeFacts = document.getElementById("home-facts");
+    const riskFlags = document.getElementById("risk-flags");
+    const actions = document.getElementById("actions");
+
+    const currency = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0
+    });
+
+    function money(value) {
+      if (value == null) return "$--";
+      return currency.format(value);
+    }
+
+    function setLoadingState(isLoading) {
+      statusText.textContent = isLoading
+        ? "Analyzing listing with live data sources..."
+        : "Analysis complete.";
+    }
+
+    function renderList(listElement, entries) {
+      listElement.innerHTML = entries.map((entry) => `<li>${entry}</li>`).join("");
+    }
+
+    function renderAnalysis(payload) {
+      const { listing, signals, analysis } = payload;
+      lastUrl.textContent = `Analyzed URL: ${listing.url}`;
+      dealScore.textContent = `${analysis.dealScore} / 100`;
+      coverage.textContent = `Coverage: ${analysis.dataCoverage.known}/${analysis.dataCoverage.total} core fields`;
+      listedPrice.textContent = money(listing.price);
+      sourceHost.textContent = `Source: ${listing.sourceHost || "--"}`;
+      mortgageRate.textContent = signals.mortgageRate30y ? `${signals.mortgageRate30y.toFixed(2)}%` : "--%";
+      mortgageDate.textContent = signals.mortgageRateDate
+        ? `FRED as of ${signals.mortgageRateDate}`
+        : "FRED unavailable";
+      monthlyPayment.textContent = money(analysis.estimatedMonthlyPayment);
+      amenityScore.textContent = signals.amenityScore ? `${signals.amenityScore} / 10` : "-- / 10";
+
+      if (signals.amenities) {
+        amenityCounts.textContent =
+          `Schools ${signals.amenities.schools}, Parks ${signals.amenities.parks}, Transit ${signals.amenities.transitStops}`;
+      } else {
+        amenityCounts.textContent = "Amenities unavailable";
+      }
+
+      if (signals.weather && signals.weather.temperatureC != null) {
+        const temp = `${signals.weather.temperatureC.toFixed(1)}°C`;
+        const wind = signals.weather.windSpeedKph != null ? `${signals.weather.windSpeedKph.toFixed(1)} kph wind` : "wind n/a";
+        weather.textContent = `${temp}, ${wind}`;
+      } else {
+        weather.textContent = "--";
+      }
+
+      listingTitle.textContent = listing.title || "--";
+      listingAddress.textContent = listing.address || signals.geocode?.displayName || "--";
+      homeFacts.textContent =
+        `${listing.bedrooms || "--"} bd / ${listing.bathrooms || "--"} ba / ${listing.squareFeet || "--"} sqft`;
+
+      renderList(riskFlags, analysis.riskFlags);
+      renderList(actions, analysis.recommendedActions.map((item) => `${item.text} (${item.level})`));
+    }
+
+    async function runAnalysis(urlValue) {
+      setLoadingState(true);
+      try {
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ listingUrl: urlValue })
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.detail || payload.error || "Analysis failed");
+        }
+        renderAnalysis(payload);
+        localStorage.setItem("lastListingUrl", urlValue);
+      } catch (error) {
+        statusText.textContent = `Analysis failed: ${error.message}`;
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const urlValue = input.value.trim();
+      if (!urlValue) return;
+      await runAnalysis(urlValue);
+    });
+
+    const savedUrl = localStorage.getItem("lastListingUrl");
+    if (savedUrl) {
+      input.value = savedUrl;
+      lastUrl.textContent = `Previous URL: ${savedUrl}`;
+    }
+  </script>
+</body>
+</html>
