@@ -1,29 +1,37 @@
 # homesight
 
-BuyerLens-style web prototype for U.S. home buyers: paste a listing URL and get an instant analysis.
+MVP for U.S. home buyers: paste a listing URL and get an instant analysis backed by real external data.
 
 ## What it does
 
-- Primary flow: user pastes a listing URL (Zillow/Redfin/Realtor.com compatible format)
-- Generates instant analysis output:
+- Accepts listing URL input and sends it to a backend analyzer (`POST /api/analyze`)
+- Pulls listing metadata from the real listing page (JSON-LD/meta extraction)
+- Enriches with live public data:
+  - 30-year mortgage rate from FRED
+  - geocoding from Nominatim (OpenStreetMap)
+  - nearby amenity counts from Overpass API
+  - current local weather from Open-Meteo
+- Returns a buyer-facing analysis payload:
   - deal score
-  - fair-value estimate
-  - neighborhood fit score
   - estimated monthly payment
-  - risk flags and next buyer actions
-- Includes a clear B2C subscription positioning (`BuyerLens Pro`) for serious buyers
-  - free trial call-to-action
-  - monthly pricing model
-  - premium features (alerts, history, negotiation playbook)
+  - data coverage summary
+  - risk flags
+  - recommended actions
+- Includes subscription positioning (`Homesight Pro`) for serious buyers (B2C)
 
 ## Run locally
 
-Because this is a static single-page site, you can open `index.html` directly in a browser.
-
-If you prefer serving it over HTTP:
+Install dependencies and run the web app + API server:
 
 ```bash
-python3 -m http.server 8080
+npm install
+npm start
 ```
 
-Then visit `http://localhost:8080`.
+Then open `http://localhost:3000`.
+
+## Test
+
+```bash
+npm test
+```

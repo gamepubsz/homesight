@@ -3,21 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BuyerLens | Instant Listing Analysis</title>
+  <title>Homesight MVP | Real Listing Analysis</title>
   <style>
     :root {
-      --bg: #f1f5f9;
       --ink: #0f172a;
       --muted: #334155;
       --surface: #ffffff;
-      --border: #dbe3ef;
+      --border: #d9e3f1;
       --accent: #1d4ed8;
       --accent-soft: #e0e7ff;
-      --positive: #15803d;
-      --warning: #b45309;
-      --danger: #b91c1c;
       --radius: 16px;
-      --shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+      --shadow: 0 10px 26px rgba(15, 23, 42, 0.11);
     }
 
     * {
@@ -29,128 +25,148 @@
     body {
       font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--ink);
-      background: radial-gradient(circle at 15% 0%, #dbeafe 0%, #f8fafc 40%, #f1f5f9 100%);
-      line-height: 1.45;
+      background: radial-gradient(circle at 15% 0%, #dbeafe 0%, #f8fafc 40%, #edf2f7 100%);
       min-height: 100vh;
+      line-height: 1.45;
     }
 
     .container {
-      width: min(1100px, 92vw);
+      width: min(1120px, 92vw);
       margin: 0 auto;
       padding: 2rem 0 3rem;
     }
 
     .hero {
-      background: linear-gradient(150deg, #eef2ff 0%, #ffffff 45%, #eff6ff 100%);
-      border: 1px solid #cfd9ea;
-      border-radius: calc(var(--radius) + 4px);
+      background: linear-gradient(160deg, #eef2ff 0%, #fff 45%, #eff6ff 100%);
+      border: 1px solid #c7d2e4;
+      border-radius: 20px;
       box-shadow: var(--shadow);
-      padding: 1.25rem;
+      padding: 1.2rem;
     }
 
     .pill {
       display: inline-block;
-      background: #dbeafe;
-      color: #1e3a8a;
-      font-size: 0.75rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.74rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
+      color: #1e3a8a;
+      background: #dbeafe;
       border-radius: 999px;
-      padding: 0.35rem 0.65rem;
-      font-weight: 700;
-      margin-bottom: 0.8rem;
+      padding: 0.32rem 0.6rem;
     }
 
     h1 {
-      font-size: clamp(1.5rem, 2.7vw, 2.45rem);
-      line-height: 1.15;
+      font-size: clamp(1.5rem, 2.9vw, 2.5rem);
+      line-height: 1.12;
       max-width: 18ch;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.55rem;
     }
 
-    .hero-text {
+    .hero p {
       color: var(--muted);
-      max-width: 65ch;
+      max-width: 66ch;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
+      grid-template-columns: 1.4fr 1fr;
       gap: 1rem;
       margin-top: 1rem;
     }
 
-    .form-shell,
-    .subscription-card {
+    .card {
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0.95rem;
-      background: #fff;
     }
 
-    .form-shell h2,
-    .subscription-card h2 {
-      font-size: 1.05rem;
-      margin-bottom: 0.3rem;
+    .card h2 {
+      font-size: 1.02rem;
+      margin-bottom: 0.35rem;
     }
 
-    .form-shell p,
-    .subscription-card p {
+    .card p {
       color: var(--muted);
       font-size: 0.92rem;
     }
 
     .url-form {
-      margin-top: 0.8rem;
+      margin-top: 0.75rem;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 0.55rem;
     }
 
-    .url-form input {
-      width: 100%;
+    input[type="url"] {
       border: 1px solid var(--border);
       border-radius: 12px;
-      font-size: 0.95rem;
       padding: 0.72rem 0.8rem;
+      font-size: 0.95rem;
+      width: 100%;
     }
 
     button {
       border: none;
-      border-radius: 12px;
       background: var(--accent);
       color: #fff;
-      font-weight: 600;
+      border-radius: 12px;
       padding: 0.72rem 0.95rem;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    .url-help {
-      margin-top: 0.6rem;
-      font-size: 0.84rem;
+    .muted-line {
+      margin-top: 0.55rem;
       color: #64748b;
+      font-size: 0.83rem;
     }
 
-    .price {
-      margin-top: 0.85rem;
-      display: grid;
-      gap: 0.4rem;
+    .mono {
+      margin-top: 0.5rem;
       color: #1e3a8a;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 0.75rem;
+      font-size: 0.82rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      word-break: break-all;
     }
 
-    .price strong {
-      font-size: 1.5rem;
-      line-height: 1.1;
+    .sub-list {
+      list-style: none;
+      margin-top: 0.7rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .sub-list li {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.6rem 0.68rem;
+      color: var(--muted);
+      font-size: 0.89rem;
+    }
+
+    .sub-cta {
+      margin-top: 0.75rem;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.62rem 0.72rem;
+      color: #3730a3;
+      font-size: 0.84rem;
+      font-weight: 600;
     }
 
     .layout {
       margin-top: 1rem;
       display: grid;
-      grid-template-columns: 1.35fr 1fr;
+      grid-template-columns: 1.36fr 1fr;
       gap: 1rem;
     }
 
@@ -163,142 +179,80 @@
     }
 
     .panel h3 {
-      font-size: 1.05rem;
+      font-size: 1.03rem;
       margin-bottom: 0.5rem;
     }
 
-    .result-grid {
+    .metrics {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.6rem;
+      gap: 0.58rem;
     }
 
     .metric {
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.75rem;
+      border-radius: 11px;
       background: #fbfdff;
+      padding: 0.68rem;
     }
 
     .metric-label {
-      font-size: 0.8rem;
+      color: #64748b;
+      font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #64748b;
-      margin-bottom: 0.28rem;
     }
 
     .metric-value {
+      font-size: 1.18rem;
       font-weight: 700;
-      font-size: 1.2rem;
+      margin-top: 0.16rem;
     }
 
     .metric-meta {
-      font-size: 0.85rem;
       color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: 0.25rem;
     }
 
-    .flags,
-    .actions {
-      margin-top: 0.85rem;
+    .list {
       list-style: none;
+      margin-top: 0.8rem;
       display: grid;
-      gap: 0.55rem;
-    }
-
-    .flags li,
-    .actions li {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 0.62rem 0.7rem;
-      background: #f8fafc;
-      color: var(--muted);
-    }
-
-    .actions li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       gap: 0.5rem;
     }
 
-    .tag {
-      border-radius: 999px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 0.18rem 0.42rem;
-      white-space: nowrap;
-    }
-
-    .tag.good {
-      color: #14532d;
-      background: #dcfce7;
-    }
-
-    .tag.warn {
-      color: #7c2d12;
-      background: #ffedd5;
-    }
-
-    .tag.risk {
-      color: #7f1d1d;
-      background: #fee2e2;
-    }
-
-    .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      word-break: break-all;
-      color: #1e3a8a;
-      margin-top: 0.35rem;
-      font-size: 0.82rem;
-    }
-
-    .sub-list {
-      list-style: none;
-      display: grid;
-      gap: 0.55rem;
-      margin-top: 0.75rem;
-    }
-
-    .sub-list li {
-      background: #f8fafc;
+    .list li {
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 0.62rem 0.7rem;
+      background: #f8fafc;
+      padding: 0.6rem 0.68rem;
       color: var(--muted);
-      font-size: 0.9rem;
     }
 
-    .sub-cta {
+    .facts {
       margin-top: 0.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      border-radius: 12px;
-      padding: 0.65rem 0.75rem;
-      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: grid;
+      gap: 0.42rem;
     }
 
-    .sub-cta small {
-      color: #4338ca;
-      font-weight: 600;
+    .facts strong {
+      color: #1e3a8a;
+      margin-right: 0.35rem;
     }
 
     footer {
       margin-top: 1rem;
       text-align: center;
-      font-size: 0.85rem;
       color: #64748b;
+      font-size: 0.84rem;
     }
 
-    @media (max-width: 940px) {
+    @media (max-width: 950px) {
       .hero-grid,
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
+      .layout,
       .url-form {
         grid-template-columns: 1fr;
       }
@@ -307,43 +261,38 @@
 </head>
 <body>
   <main class="container">
-    <section class="hero" aria-label="BuyerLens listing analyzer">
-      <span class="pill">US Buyers First</span>
-      <h1>Paste any listing URL. Get an instant buying analysis.</h1>
-      <p class="hero-text">
-        Built for U.S. home buyers who want fast confidence: price fairness, risk flags,
-        neighborhood score, and negotiation actions in one screen.
+    <section class="hero">
+      <span class="pill">US Buyer MVP · Real Data Wired</span>
+      <h1>Paste a listing URL and get an instant real-data analysis.</h1>
+      <p>
+        This MVP fetches live listing metadata, current 30-year mortgage rate,
+        and neighborhood context (OpenStreetMap + geocoding) to help serious
+        U.S. buyers evaluate listings quickly.
       </p>
 
       <div class="hero-grid">
-        <article class="form-shell">
-          <h2>Analyze a Listing</h2>
-          <p>Works with Zillow, Redfin, Realtor.com, and most listing URLs.</p>
-          <form class="url-form" id="url-form">
-            <input
-              id="listing-url"
-              type="url"
-              required
-              placeholder="Paste listing URL (https://...)"
-              aria-label="Listing URL"
-            >
-            <button type="submit">Instant Analyze</button>
+        <article class="card">
+          <h2>Analyze a listing URL</h2>
+          <p>Try Realtor, Zillow, Redfin, or another page with structured listing metadata.</p>
+          <form id="url-form" class="url-form">
+            <input id="listing-url" type="url" required placeholder="https://..." />
+            <button type="submit">Analyze Now</button>
           </form>
-          <div class="url-help">Try: https://www.zillow.com/homedetails/sample-listing/</div>
-          <div class="mono" id="analyzed-url" aria-live="polite">No URL analyzed yet.</div>
+          <div class="muted-line" id="status-text">Ready for first analysis.</div>
+          <div class="mono" id="last-url">No URL analyzed yet.</div>
         </article>
 
-        <article class="subscription-card">
-          <h2>BuyerLens Pro (Subscription)</h2>
-          <p>For serious buyers comparing multiple homes and negotiating with data.</p>
+        <article class="card">
+          <h2>Homesight Pro (B2C Subscription)</h2>
+          <p>For serious buyers comparing multiple homes and preparing offers.</p>
           <ul class="sub-list">
-            <li>Unlimited listing analyses + saved score history</li>
-            <li>Daily price-drop and comp alerts for tracked homes</li>
-            <li>Negotiation playbook with offer-range recommendations</li>
+            <li>Unlimited URL analyses + saved comparisons</li>
+            <li>Live mortgage-rate and risk monitoring on tracked listings</li>
+            <li>Negotiation checklist with comp-driven recommendations</li>
           </ul>
           <div class="sub-cta">
-            <small>$29/month after 7-day trial</small>
-            <button type="button">Start Free Trial</button>
+            <span>$29/mo after a 7-day trial</span>
+            <button type="button">Start Trial</button>
           </div>
         </article>
       </div>
@@ -351,234 +300,174 @@
 
     <section class="layout">
       <article class="panel">
-        <h3>Instant Analysis Output</h3>
-        <div class="result-grid">
+        <h3>Instant Analysis</h3>
+        <div class="metrics">
           <div class="metric">
             <div class="metric-label">Deal Score</div>
             <div class="metric-value" id="deal-score">-- / 100</div>
-            <div class="metric-meta" id="deal-label">Awaiting listing URL</div>
+            <div class="metric-meta" id="coverage">Coverage: --</div>
           </div>
           <div class="metric">
-            <div class="metric-label">Fair Value Estimate</div>
-            <div class="metric-value" id="fair-value">$--</div>
-            <div class="metric-meta" id="value-delta">Paste a URL to compare market value</div>
+            <div class="metric-label">Listed Price</div>
+            <div class="metric-value" id="listed-price">$--</div>
+            <div class="metric-meta" id="source-host">Source: --</div>
           </div>
           <div class="metric">
-            <div class="metric-label">Neighborhood Fit</div>
-            <div class="metric-value" id="hood-score">-- / 10</div>
-            <div class="metric-meta" id="hood-label">No signal yet</div>
+            <div class="metric-label">Live 30Y Mortgage</div>
+            <div class="metric-value" id="mortgage-rate">--%</div>
+            <div class="metric-meta" id="mortgage-date">FRED latest value</div>
           </div>
           <div class="metric">
-            <div class="metric-label">Estimated Payment</div>
-            <div class="metric-value" id="payment">$--/mo</div>
-            <div class="metric-meta" id="payment-meta">30y fixed @ 6.25% estimate</div>
+            <div class="metric-label">Est. Monthly Payment</div>
+            <div class="metric-value" id="monthly-payment">$--</div>
+            <div class="metric-meta">80% financed, 30-year fixed</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Amenity Score</div>
+            <div class="metric-value" id="amenity-score">-- / 10</div>
+            <div class="metric-meta" id="amenity-counts">Schools/Parks/Transit: --</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Local Weather</div>
+            <div class="metric-value" id="weather">--</div>
+            <div class="metric-meta">Open-Meteo current conditions</div>
           </div>
         </div>
 
-        <ul class="flags" id="risk-flags">
-          <li>Risk flags will appear after URL analysis.</li>
-        </ul>
+        <div class="facts">
+          <div><strong>Title:</strong><span id="listing-title">--</span></div>
+          <div><strong>Address:</strong><span id="listing-address">--</span></div>
+          <div><strong>Beds/Baths/Sqft:</strong><span id="home-facts">--</span></div>
+        </div>
       </article>
 
       <article class="panel">
-        <h3>Recommended Buyer Actions</h3>
-        <p style="color: var(--muted);">Next moves generated from the URL signals.</p>
-        <ul class="actions" id="buyer-actions">
-          <li><span>Run first analysis to unlock actions</span><span class="tag warn">Pending</span></li>
+        <h3>Risk Flags</h3>
+        <ul class="list" id="risk-flags">
+          <li>Analyze a listing URL to populate risk flags.</li>
         </ul>
-        <div class="price">
-          <div>Likely competitive offer range</div>
-          <strong id="offer-range">$-- to $--</strong>
-          <div id="offer-note">Generated after first URL analysis.</div>
-        </div>
+
+        <h3 style="margin-top:0.85rem;">Recommended Actions</h3>
+        <ul class="list" id="actions">
+          <li>Actions appear after successful analysis.</li>
+        </ul>
       </article>
     </section>
 
-    <footer>
-      Prototype: URL-instant analysis + subscription conversion flow for U.S. buyers.
-    </footer>
+    <footer>Homesight MVP: real URL extraction + live signal enrichment.</footer>
   </main>
 
   <script>
     const form = document.getElementById("url-form");
     const input = document.getElementById("listing-url");
-    const analyzedUrl = document.getElementById("analyzed-url");
+    const statusText = document.getElementById("status-text");
+    const lastUrl = document.getElementById("last-url");
+
     const dealScore = document.getElementById("deal-score");
-    const dealLabel = document.getElementById("deal-label");
-    const fairValue = document.getElementById("fair-value");
-    const valueDelta = document.getElementById("value-delta");
-    const hoodScore = document.getElementById("hood-score");
-    const hoodLabel = document.getElementById("hood-label");
-    const payment = document.getElementById("payment");
+    const coverage = document.getElementById("coverage");
+    const listedPrice = document.getElementById("listed-price");
+    const sourceHost = document.getElementById("source-host");
+    const mortgageRate = document.getElementById("mortgage-rate");
+    const mortgageDate = document.getElementById("mortgage-date");
+    const monthlyPayment = document.getElementById("monthly-payment");
+    const amenityScore = document.getElementById("amenity-score");
+    const amenityCounts = document.getElementById("amenity-counts");
+    const weather = document.getElementById("weather");
+    const listingTitle = document.getElementById("listing-title");
+    const listingAddress = document.getElementById("listing-address");
+    const homeFacts = document.getElementById("home-facts");
     const riskFlags = document.getElementById("risk-flags");
-    const buyerActions = document.getElementById("buyer-actions");
-    const offerRange = document.getElementById("offer-range");
-    const offerNote = document.getElementById("offer-note");
+    const actions = document.getElementById("actions");
 
-    function hashString(text) {
-      let hash = 0;
-      for (let i = 0; i < text.length; i += 1) {
-        hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
-      }
-      return hash;
-    }
-
-    function toCurrency(value) {
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0
-      }).format(value);
-    }
-
-    function scoreLabel(score) {
-      if (score >= 80) return { text: "Strong buy signal", className: "good" };
-      if (score >= 65) return { text: "Promising with caution", className: "warn" };
-      return { text: "High diligence required", className: "risk" };
-    }
-
-    function parseHost(url) {
-      const host = url.hostname.replace("www.", "");
-      if (host.includes("zillow")) return "Zillow";
-      if (host.includes("redfin")) return "Redfin";
-      if (host.includes("realtor")) return "Realtor.com";
-      return host;
-    }
-
-    function inferMarketTone(urlText) {
-      const lower = urlText.toLowerCase();
-      if (lower.includes("austin") || lower.includes("miami") || lower.includes("seattle")) {
-        return "hot";
-      }
-      if (lower.includes("phoenix") || lower.includes("chicago") || lower.includes("atlanta")) {
-        return "balanced";
-      }
-      return "stable";
-    }
-
-    function analyze(urlString) {
-      const url = new URL(urlString);
-      const hash = hashString(urlString);
-      const source = parseHost(url);
-      const marketTone = inferMarketTone(urlString);
-
-      const score = 55 + (hash % 41);
-      const fairValueEstimate = 320000 + (hash % 720000);
-      const listPrice = fairValueEstimate + (((hash >> 2) % 60001) - 30000);
-      const neighborhood = 5.8 + ((hash % 41) / 10);
-
-      const monthlyRate = 0.0625 / 12;
-      const months = 360;
-      const principal = listPrice * 0.8;
-      const monthlyPayment = principal * (monthlyRate * ((1 + monthlyRate) ** months)) / (((1 + monthlyRate) ** months) - 1);
-
-      const label = scoreLabel(score);
-      const delta = listPrice - fairValueEstimate;
-      const deltaPrefix = delta > 0 ? "+" : "";
-      const competitiveFloor = Math.round(listPrice * (0.975 + (score / 1000)));
-      const competitiveCeil = Math.round(listPrice * (1.02 + (score / 1200)));
-
-      return {
-        source,
-        marketTone,
-        score,
-        label,
-        fairValueEstimate,
-        listPrice,
-        neighborhood,
-        monthlyPayment,
-        delta,
-        deltaPrefix,
-        competitiveFloor,
-        competitiveCeil
-      };
-    }
-
-    function renderRiskFlags(results) {
-      const flags = [
-        `Listing source detected: ${results.source}.`,
-        `Market tone classified as ${results.marketTone}.`,
-        `List vs fair value delta: ${results.deltaPrefix}${toCurrency(results.delta)}.`
-      ];
-
-      if (results.score < 70) {
-        flags.push("Recommend requesting a full inspection contingency before offer.");
-      } else {
-        flags.push("Low immediate risk from top-level signals; verify disclosures next.");
-      }
-
-      riskFlags.innerHTML = flags.map((flag) => `<li>${flag}</li>`).join("");
-    }
-
-    function renderActions(results) {
-      const actions = [
-        {
-          text: "Pull 3 recent sold comps within 1 mile",
-          tag: "Must do",
-          level: "warn"
-        },
-        {
-          text: `Offer prep: target ${toCurrency(results.competitiveFloor)} to ${toCurrency(results.competitiveCeil)}`,
-          tag: "Negotiation",
-          level: "good"
-        },
-        {
-          text: "Pre-wire lender docs before making offer",
-          tag: "Speed",
-          level: "good"
-        }
-      ];
-
-      if (results.marketTone === "hot") {
-        actions.push({
-          text: "Set 24-hour decision timer; hot-market homes move fast",
-          tag: "Timing",
-          level: "risk"
-        });
-      }
-
-      buyerActions.innerHTML = actions
-        .map((item) => `<li><span>${item.text}</span><span class="tag ${item.level}">${item.tag}</span></li>`)
-        .join("");
-    }
-
-    function render(results, urlString) {
-      dealScore.textContent = `${results.score} / 100`;
-      dealLabel.textContent = results.label.text;
-      fairValue.textContent = toCurrency(results.fairValueEstimate);
-      valueDelta.textContent = `Modeled list price ${toCurrency(results.listPrice)} (${results.deltaPrefix}${toCurrency(results.delta)} vs fair value)`;
-      hoodScore.textContent = `${results.neighborhood.toFixed(1)} / 10`;
-      hoodLabel.textContent = `Neighborhood confidence from comparable-buyer behavior`;
-      payment.textContent = `${toCurrency(results.monthlyPayment)}/mo`;
-      offerRange.textContent = `${toCurrency(results.competitiveFloor)} to ${toCurrency(results.competitiveCeil)}`;
-      offerNote.textContent = `Range tuned for ${results.marketTone} U.S. micro-market conditions.`;
-      analyzedUrl.textContent = `Analyzed URL: ${urlString}`;
-      renderRiskFlags(results);
-      renderActions(results);
-    }
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const urlString = input.value.trim();
-      if (!urlString) return;
-
-      try {
-        const results = analyze(urlString);
-        render(results, urlString);
-        localStorage.setItem("lastListingUrl", urlString);
-      } catch {
-        analyzedUrl.textContent = "Please enter a valid listing URL that starts with http:// or https://";
-      }
+    const currency = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0
     });
 
-    const lastUrl = localStorage.getItem("lastListingUrl");
-    if (lastUrl) {
-      input.value = lastUrl;
-      try {
-        render(analyze(lastUrl), lastUrl);
-      } catch {
-        localStorage.removeItem("lastListingUrl");
+    function money(value) {
+      if (value == null) return "$--";
+      return currency.format(value);
+    }
+
+    function setLoadingState(isLoading) {
+      statusText.textContent = isLoading
+        ? "Analyzing listing with live data sources..."
+        : "Analysis complete.";
+    }
+
+    function renderList(listElement, entries) {
+      listElement.innerHTML = entries.map((entry) => `<li>${entry}</li>`).join("");
+    }
+
+    function renderAnalysis(payload) {
+      const { listing, signals, analysis } = payload;
+      lastUrl.textContent = `Analyzed URL: ${listing.url}`;
+      dealScore.textContent = `${analysis.dealScore} / 100`;
+      coverage.textContent = `Coverage: ${analysis.dataCoverage.known}/${analysis.dataCoverage.total} core fields`;
+      listedPrice.textContent = money(listing.price);
+      sourceHost.textContent = `Source: ${listing.sourceHost || "--"}`;
+      mortgageRate.textContent = signals.mortgageRate30y ? `${signals.mortgageRate30y.toFixed(2)}%` : "--%";
+      mortgageDate.textContent = signals.mortgageRateDate
+        ? `FRED as of ${signals.mortgageRateDate}`
+        : "FRED unavailable";
+      monthlyPayment.textContent = money(analysis.estimatedMonthlyPayment);
+      amenityScore.textContent = signals.amenityScore ? `${signals.amenityScore} / 10` : "-- / 10";
+
+      if (signals.amenities) {
+        amenityCounts.textContent =
+          `Schools ${signals.amenities.schools}, Parks ${signals.amenities.parks}, Transit ${signals.amenities.transitStops}`;
+      } else {
+        amenityCounts.textContent = "Amenities unavailable";
       }
+
+      if (signals.weather && signals.weather.temperatureC != null) {
+        const temp = `${signals.weather.temperatureC.toFixed(1)}°C`;
+        const wind = signals.weather.windSpeedKph != null ? `${signals.weather.windSpeedKph.toFixed(1)} kph wind` : "wind n/a";
+        weather.textContent = `${temp}, ${wind}`;
+      } else {
+        weather.textContent = "--";
+      }
+
+      listingTitle.textContent = listing.title || "--";
+      listingAddress.textContent = listing.address || signals.geocode?.displayName || "--";
+      homeFacts.textContent =
+        `${listing.bedrooms || "--"} bd / ${listing.bathrooms || "--"} ba / ${listing.squareFeet || "--"} sqft`;
+
+      renderList(riskFlags, analysis.riskFlags);
+      renderList(actions, analysis.recommendedActions.map((item) => `${item.text} (${item.level})`));
+    }
+
+    async function runAnalysis(urlValue) {
+      setLoadingState(true);
+      try {
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ listingUrl: urlValue })
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.detail || payload.error || "Analysis failed");
+        }
+        renderAnalysis(payload);
+        localStorage.setItem("lastListingUrl", urlValue);
+      } catch (error) {
+        statusText.textContent = `Analysis failed: ${error.message}`;
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const urlValue = input.value.trim();
+      if (!urlValue) return;
+      await runAnalysis(urlValue);
+    });
+
+    const savedUrl = localStorage.getItem("lastListingUrl");
+    if (savedUrl) {
+      input.value = savedUrl;
+      lastUrl.textContent = `Previous URL: ${savedUrl}`;
     }
   </script>
 </body>
