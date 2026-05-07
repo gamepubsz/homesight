@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>House Concierge | Get What You Need Fast</title>
+  <title>BuyerLens | Instant Listing Analysis</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #0f172a;
+      --bg: #f1f5f9;
+      --ink: #0f172a;
+      --muted: #334155;
       --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --text: #0f172a;
-      --text-soft: #334155;
-      --accent: #2563eb;
-      --accent-soft: #dbeafe;
-      --success: #16a34a;
-      --border: #e2e8f0;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
-      --radius: 18px;
+      --border: #dbe3ef;
+      --accent: #1d4ed8;
+      --accent-soft: #e0e7ff;
+      --positive: #15803d;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
     }
 
     * {
@@ -28,10 +28,10 @@
 
     body {
       font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-      background: linear-gradient(145deg, #eff6ff, #f8fafc 45%, #eef2ff);
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 0%, #dbeafe 0%, #f8fafc 40%, #f1f5f9 100%);
+      line-height: 1.45;
       min-height: 100vh;
-      line-height: 1.5;
     }
 
     .container {
@@ -41,181 +41,265 @@
     }
 
     .hero {
-      background: radial-gradient(circle at 15% 20%, #bfdbfe 0%, #dbeafe 35%, #f8fafc 75%);
-      border: 1px solid #cbd5e1;
+      background: linear-gradient(150deg, #eef2ff 0%, #ffffff 45%, #eff6ff 100%);
+      border: 1px solid #cfd9ea;
       border-radius: calc(var(--radius) + 4px);
-      padding: 1.5rem;
       box-shadow: var(--shadow);
+      padding: 1.25rem;
     }
 
-    .kicker {
+    .pill {
       display: inline-block;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       background: #dbeafe;
-      color: #1d4ed8;
-      padding: 0.4rem 0.65rem;
+      color: #1e3a8a;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       border-radius: 999px;
-      margin-bottom: 0.75rem;
+      padding: 0.35rem 0.65rem;
       font-weight: 700;
+      margin-bottom: 0.8rem;
     }
 
     h1 {
-      font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+      font-size: clamp(1.5rem, 2.7vw, 2.45rem);
       line-height: 1.15;
-      margin-bottom: 0.5rem;
       max-width: 18ch;
+      margin-bottom: 0.6rem;
     }
 
-    .hero p {
-      color: var(--text-soft);
-      max-width: 60ch;
-      margin-bottom: 1rem;
+    .hero-text {
+      color: var(--muted);
+      max-width: 65ch;
     }
 
-    .intent-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-top: 0.75rem;
-    }
-
-    .intent-btn {
-      border: 1px solid #93c5fd;
-      background: #ffffffc7;
-      color: #1e3a8a;
-      padding: 0.6rem 0.95rem;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-
-    .intent-btn:hover {
-      transform: translateY(-2px);
-      background: #ffffff;
-    }
-
-    .intent-btn.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-
-    .grid {
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 1fr;
+      grid-template-columns: 1.3fr 1fr;
       gap: 1rem;
       margin-top: 1rem;
     }
 
-    .card {
-      background: var(--surface);
+    .form-shell,
+    .subscription-card {
       border: 1px solid var(--border);
       border-radius: var(--radius);
+      padding: 0.95rem;
+      background: #fff;
+    }
+
+    .form-shell h2,
+    .subscription-card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-shell p,
+    .subscription-card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .url-form {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.55rem;
+    }
+
+    .url-form input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      padding: 0.72rem 0.8rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.72rem 0.95rem;
+      cursor: pointer;
+    }
+
+    .url-help {
+      margin-top: 0.6rem;
+      font-size: 0.84rem;
+      color: #64748b;
+    }
+
+    .price {
+      margin-top: 0.85rem;
+      display: grid;
+      gap: 0.4rem;
+      color: #1e3a8a;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 0.75rem;
+    }
+
+    .price strong {
+      font-size: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .layout {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
       box-shadow: var(--shadow);
       padding: 1rem;
     }
 
-    .card h2 {
+    .panel h3 {
       font-size: 1.05rem;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
-    .card p {
-      color: var(--text-soft);
-      font-size: 0.95rem;
-    }
-
-    .actions {
-      list-style: none;
-      margin-top: 0.85rem;
+    .result-grid {
       display: grid;
-      gap: 0.65rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: #fbfdff;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      margin-bottom: 0.28rem;
+    }
+
+    .metric-value {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .metric-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .flags,
+    .actions {
+      margin-top: 0.85rem;
+      list-style: none;
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .flags li,
+    .actions li {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 0.62rem 0.7rem;
+      background: #f8fafc;
+      color: var(--muted);
     }
 
     .actions li {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.65rem 0.75rem;
-      background: var(--surface-soft);
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .badge {
-      background: var(--accent-soft);
-      color: #1d4ed8;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.25rem 0.5rem;
+    .tag {
       border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.18rem 0.42rem;
       white-space: nowrap;
     }
 
-    .assistant-form {
-      margin-top: 0.8rem;
-      display: flex;
-      gap: 0.5rem;
+    .tag.good {
+      color: #14532d;
+      background: #dcfce7;
     }
 
-    input[type="text"] {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 0.72rem 0.8rem;
-      font-size: 0.95rem;
+    .tag.warn {
+      color: #7c2d12;
+      background: #ffedd5;
     }
 
-    button[type="submit"] {
-      border: none;
-      background: var(--accent);
-      color: white;
-      padding: 0.72rem 0.9rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
+    .tag.risk {
+      color: #7f1d1d;
+      background: #fee2e2;
     }
 
-    .assistant-response {
-      margin-top: 0.8rem;
-      border: 1px solid #bfdbfe;
-      background: #eff6ff;
-      border-radius: 12px;
-      padding: 0.75rem;
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      word-break: break-all;
       color: #1e3a8a;
-      font-size: 0.92rem;
-      min-height: 72px;
+      margin-top: 0.35rem;
+      font-size: 0.82rem;
     }
 
-    .highlights {
+    .sub-list {
+      list-style: none;
       display: grid;
       gap: 0.55rem;
-      list-style: none;
       margin-top: 0.75rem;
     }
 
-    .highlights li {
-      border-left: 4px solid var(--success);
-      background: #f0fdf4;
-      padding: 0.55rem 0.7rem;
-      border-radius: 8px;
-      color: #14532d;
-      font-weight: 500;
+    .sub-list li {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.62rem 0.7rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .sub-cta {
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 0.65rem 0.75rem;
+      gap: 0.6rem;
+    }
+
+    .sub-cta small {
+      color: #4338ca;
+      font-weight: 600;
     }
 
     footer {
       margin-top: 1rem;
       text-align: center;
-      color: #475569;
       font-size: 0.85rem;
+      color: #64748b;
     }
 
-    @media (max-width: 900px) {
-      .grid {
+    @media (max-width: 940px) {
+      .hero-grid,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .url-form {
         grid-template-columns: 1fr;
       }
     }
@@ -223,196 +307,278 @@
 </head>
 <body>
   <main class="container">
-    <section class="hero" aria-label="House concierge">
-      <span class="kicker">Instant Home Experience</span>
-      <h1>Everything a visitor wants, the second they arrive.</h1>
-      <p>
-        This concierge landing page detects intent and surfaces the right next step
-        immediately: tour booking, price guidance, financing, neighborhood insight,
-        and direct answers.
+    <section class="hero" aria-label="BuyerLens listing analyzer">
+      <span class="pill">US Buyers First</span>
+      <h1>Paste any listing URL. Get an instant buying analysis.</h1>
+      <p class="hero-text">
+        Built for U.S. home buyers who want fast confidence: price fairness, risk flags,
+        neighborhood score, and negotiation actions in one screen.
       </p>
-      <div class="intent-row" role="group" aria-label="visitor intent">
-        <button class="intent-btn active" data-intent="tour">Book a Tour</button>
-        <button class="intent-btn" data-intent="price">Price & Value</button>
-        <button class="intent-btn" data-intent="finance">Mortgage Help</button>
-        <button class="intent-btn" data-intent="details">Property Details</button>
+
+      <div class="hero-grid">
+        <article class="form-shell">
+          <h2>Analyze a Listing</h2>
+          <p>Works with Zillow, Redfin, Realtor.com, and most listing URLs.</p>
+          <form class="url-form" id="url-form">
+            <input
+              id="listing-url"
+              type="url"
+              required
+              placeholder="Paste listing URL (https://...)"
+              aria-label="Listing URL"
+            >
+            <button type="submit">Instant Analyze</button>
+          </form>
+          <div class="url-help">Try: https://www.zillow.com/homedetails/sample-listing/</div>
+          <div class="mono" id="analyzed-url" aria-live="polite">No URL analyzed yet.</div>
+        </article>
+
+        <article class="subscription-card">
+          <h2>BuyerLens Pro (Subscription)</h2>
+          <p>For serious buyers comparing multiple homes and negotiating with data.</p>
+          <ul class="sub-list">
+            <li>Unlimited listing analyses + saved score history</li>
+            <li>Daily price-drop and comp alerts for tracked homes</li>
+            <li>Negotiation playbook with offer-range recommendations</li>
+          </ul>
+          <div class="sub-cta">
+            <small>$29/month after 7-day trial</small>
+            <button type="button">Start Free Trial</button>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section class="grid">
-      <article class="card">
-        <h2 id="intent-heading">Best next steps for touring this home</h2>
-        <p id="intent-description">
-          Visitors can instantly claim a tour slot, request a live walkthrough, or ask for an open-house reminder.
-        </p>
-        <ul class="actions" id="action-list"></ul>
-      </article>
-
-      <article class="card">
-        <h2>Ask the House Concierge</h2>
-        <p>Type what you need and get directed to the exact part of the buying journey.</p>
-        <form class="assistant-form" id="assistant-form">
-          <input
-            id="assistant-input"
-            type="text"
-            maxlength="120"
-            placeholder="Example: Is this area good for families?"
-            required
-          >
-          <button type="submit">Ask</button>
-        </form>
-        <div class="assistant-response" id="assistant-response" aria-live="polite">
-          Share your goal, and this panel instantly routes you to the right info.
+    <section class="layout">
+      <article class="panel">
+        <h3>Instant Analysis Output</h3>
+        <div class="result-grid">
+          <div class="metric">
+            <div class="metric-label">Deal Score</div>
+            <div class="metric-value" id="deal-score">-- / 100</div>
+            <div class="metric-meta" id="deal-label">Awaiting listing URL</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Fair Value Estimate</div>
+            <div class="metric-value" id="fair-value">$--</div>
+            <div class="metric-meta" id="value-delta">Paste a URL to compare market value</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Neighborhood Fit</div>
+            <div class="metric-value" id="hood-score">-- / 10</div>
+            <div class="metric-meta" id="hood-label">No signal yet</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Estimated Payment</div>
+            <div class="metric-value" id="payment">$--/mo</div>
+            <div class="metric-meta" id="payment-meta">30y fixed @ 6.25% estimate</div>
+          </div>
         </div>
-      </article>
 
-      <article class="card">
-        <h2>Neighborhood Highlights</h2>
-        <p>Pre-loaded local value points users usually ask for first.</p>
-        <ul class="highlights">
-          <li>8-minute walk to top-rated elementary school.</li>
-          <li>Commute to downtown in 22 minutes by rail.</li>
-          <li>Grocery, gym, and pharmacy all within 0.6 miles.</li>
-          <li>Quiet street with low through-traffic after 7 PM.</li>
+        <ul class="flags" id="risk-flags">
+          <li>Risk flags will appear after URL analysis.</li>
         </ul>
       </article>
 
-      <article class="card">
-        <h2>Quick Facts Snapshot</h2>
-        <p>Core details most buyers ask before scrolling anywhere else.</p>
-        <ul class="actions">
-          <li><span>4 Bed · 3 Bath · 2,540 sqft</span><span class="badge">Layout</span></li>
-          <li><span>Estimated payment: $3,180/mo</span><span class="badge">Finance</span></li>
-          <li><span>Recent area growth: +9.2% YoY</span><span class="badge">Market</span></li>
-          <li><span>Next open house: Sat 1:00 PM</span><span class="badge">Schedule</span></li>
+      <article class="panel">
+        <h3>Recommended Buyer Actions</h3>
+        <p style="color: var(--muted);">Next moves generated from the URL signals.</p>
+        <ul class="actions" id="buyer-actions">
+          <li><span>Run first analysis to unlock actions</span><span class="tag warn">Pending</span></li>
         </ul>
+        <div class="price">
+          <div>Likely competitive offer range</div>
+          <strong id="offer-range">$-- to $--</strong>
+          <div id="offer-note">Generated after first URL analysis.</div>
+        </div>
       </article>
     </section>
 
     <footer>
-      Built as a launch-ready landing page prototype for a “get-what-I-need-now” home experience.
+      Prototype: URL-instant analysis + subscription conversion flow for U.S. buyers.
     </footer>
   </main>
 
   <script>
-    const intentData = {
-      tour: {
-        heading: "Best next steps for touring this home",
-        description:
-          "Visitors can instantly claim a tour slot, request a live walkthrough, or ask for an open-house reminder.",
-        actions: [
-          { text: "Pick a private tour slot (today/tomorrow)", tag: "Fastest" },
-          { text: "Join a guided 3D virtual walk", tag: "Remote" },
-          { text: "Get SMS reminder for next open house", tag: "Popular" }
-        ]
-      },
-      price: {
-        heading: "Price confidence in under a minute",
-        description:
-          "Users can compare nearby sold homes, see appreciation trends, and request a strategy call.",
-        actions: [
-          { text: "Compare this home against 5 nearby sales", tag: "Data" },
-          { text: "See negotiation room estimate", tag: "AI insight" },
-          { text: "Download valuation report PDF", tag: "Report" }
-        ]
-      },
-      finance: {
-        heading: "Financing answers immediately",
-        description:
-          "Present loan scenarios, monthly payment estimates, and pre-approval options without leaving the page.",
-        actions: [
-          { text: "Try 15-year vs 30-year payment simulation", tag: "Calculator" },
-          { text: "Get lender match in 60 seconds", tag: "Instant" },
-          { text: "Start soft-credit pre-approval", tag: "No hard pull" }
-        ]
-      },
-      details: {
-        heading: "Property details users ask for first",
-        description:
-          "Offer floor plans, renovation history, utility costs, HOA details, and disclosure access at first click.",
-        actions: [
-          { text: "Open full floor plan with room dimensions", tag: "Layout" },
-          { text: "Review improvements and permit timeline", tag: "History" },
-          { text: "Check utility and maintenance estimates", tag: "Costs" }
-        ]
+    const form = document.getElementById("url-form");
+    const input = document.getElementById("listing-url");
+    const analyzedUrl = document.getElementById("analyzed-url");
+    const dealScore = document.getElementById("deal-score");
+    const dealLabel = document.getElementById("deal-label");
+    const fairValue = document.getElementById("fair-value");
+    const valueDelta = document.getElementById("value-delta");
+    const hoodScore = document.getElementById("hood-score");
+    const hoodLabel = document.getElementById("hood-label");
+    const payment = document.getElementById("payment");
+    const riskFlags = document.getElementById("risk-flags");
+    const buyerActions = document.getElementById("buyer-actions");
+    const offerRange = document.getElementById("offer-range");
+    const offerNote = document.getElementById("offer-note");
+
+    function hashString(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i += 1) {
+        hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
       }
-    };
+      return hash;
+    }
 
-    const quickAnswerRules = [
-      {
-        keywords: ["school", "family", "kids"],
-        response: "Family fit looks strong: top-rated schools nearby and multiple parks within a short walk."
-      },
-      {
-        keywords: ["payment", "mortgage", "loan", "finance"],
-        response: "For financing, start with the payment simulation and lender match actions in the Mortgage Help tab."
-      },
-      {
-        keywords: ["tour", "visit", "showing"],
-        response: "You can book the fastest private tour from the first recommended action under Book a Tour."
-      },
-      {
-        keywords: ["price", "value", "deal"],
-        response: "Open the Price & Value tab to compare recent sales and preview a negotiation-room estimate."
+    function toCurrency(value) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function scoreLabel(score) {
+      if (score >= 80) return { text: "Strong buy signal", className: "good" };
+      if (score >= 65) return { text: "Promising with caution", className: "warn" };
+      return { text: "High diligence required", className: "risk" };
+    }
+
+    function parseHost(url) {
+      const host = url.hostname.replace("www.", "");
+      if (host.includes("zillow")) return "Zillow";
+      if (host.includes("redfin")) return "Redfin";
+      if (host.includes("realtor")) return "Realtor.com";
+      return host;
+    }
+
+    function inferMarketTone(urlText) {
+      const lower = urlText.toLowerCase();
+      if (lower.includes("austin") || lower.includes("miami") || lower.includes("seattle")) {
+        return "hot";
       }
-    ];
+      if (lower.includes("phoenix") || lower.includes("chicago") || lower.includes("atlanta")) {
+        return "balanced";
+      }
+      return "stable";
+    }
 
-    const buttons = [...document.querySelectorAll(".intent-btn")];
-    const heading = document.getElementById("intent-heading");
-    const description = document.getElementById("intent-description");
-    const actionList = document.getElementById("action-list");
-    const assistantForm = document.getElementById("assistant-form");
-    const assistantInput = document.getElementById("assistant-input");
-    const assistantResponse = document.getElementById("assistant-response");
+    function analyze(urlString) {
+      const url = new URL(urlString);
+      const hash = hashString(urlString);
+      const source = parseHost(url);
+      const marketTone = inferMarketTone(urlString);
 
-    function renderIntent(intentKey) {
-      const intent = intentData[intentKey];
-      if (!intent) return;
+      const score = 55 + (hash % 41);
+      const fairValueEstimate = 320000 + (hash % 720000);
+      const listPrice = fairValueEstimate + (((hash >> 2) % 60001) - 30000);
+      const neighborhood = 5.8 + ((hash % 41) / 10);
 
-      heading.textContent = intent.heading;
-      description.textContent = intent.description;
-      actionList.innerHTML = intent.actions
-        .map(
-          (action) =>
-            `<li><span>${action.text}</span><span class="badge">${action.tag}</span></li>`
-        )
+      const monthlyRate = 0.0625 / 12;
+      const months = 360;
+      const principal = listPrice * 0.8;
+      const monthlyPayment = principal * (monthlyRate * ((1 + monthlyRate) ** months)) / (((1 + monthlyRate) ** months) - 1);
+
+      const label = scoreLabel(score);
+      const delta = listPrice - fairValueEstimate;
+      const deltaPrefix = delta > 0 ? "+" : "";
+      const competitiveFloor = Math.round(listPrice * (0.975 + (score / 1000)));
+      const competitiveCeil = Math.round(listPrice * (1.02 + (score / 1200)));
+
+      return {
+        source,
+        marketTone,
+        score,
+        label,
+        fairValueEstimate,
+        listPrice,
+        neighborhood,
+        monthlyPayment,
+        delta,
+        deltaPrefix,
+        competitiveFloor,
+        competitiveCeil
+      };
+    }
+
+    function renderRiskFlags(results) {
+      const flags = [
+        `Listing source detected: ${results.source}.`,
+        `Market tone classified as ${results.marketTone}.`,
+        `List vs fair value delta: ${results.deltaPrefix}${toCurrency(results.delta)}.`
+      ];
+
+      if (results.score < 70) {
+        flags.push("Recommend requesting a full inspection contingency before offer.");
+      } else {
+        flags.push("Low immediate risk from top-level signals; verify disclosures next.");
+      }
+
+      riskFlags.innerHTML = flags.map((flag) => `<li>${flag}</li>`).join("");
+    }
+
+    function renderActions(results) {
+      const actions = [
+        {
+          text: "Pull 3 recent sold comps within 1 mile",
+          tag: "Must do",
+          level: "warn"
+        },
+        {
+          text: `Offer prep: target ${toCurrency(results.competitiveFloor)} to ${toCurrency(results.competitiveCeil)}`,
+          tag: "Negotiation",
+          level: "good"
+        },
+        {
+          text: "Pre-wire lender docs before making offer",
+          tag: "Speed",
+          level: "good"
+        }
+      ];
+
+      if (results.marketTone === "hot") {
+        actions.push({
+          text: "Set 24-hour decision timer; hot-market homes move fast",
+          tag: "Timing",
+          level: "risk"
+        });
+      }
+
+      buyerActions.innerHTML = actions
+        .map((item) => `<li><span>${item.text}</span><span class="tag ${item.level}">${item.tag}</span></li>`)
         .join("");
-
-      buttons.forEach((button) => {
-        button.classList.toggle("active", button.dataset.intent === intentKey);
-      });
-
-      localStorage.setItem("preferredIntent", intentKey);
     }
 
-    function answerQuery(rawText) {
-      const text = rawText.toLowerCase();
-      const match = quickAnswerRules.find((rule) =>
-        rule.keywords.some((keyword) => text.includes(keyword))
-      );
-      if (match) return match.response;
-      return "Start with your closest goal above (Tour, Price, Mortgage, or Details) and this page will narrow the best path instantly.";
+    function render(results, urlString) {
+      dealScore.textContent = `${results.score} / 100`;
+      dealLabel.textContent = results.label.text;
+      fairValue.textContent = toCurrency(results.fairValueEstimate);
+      valueDelta.textContent = `Modeled list price ${toCurrency(results.listPrice)} (${results.deltaPrefix}${toCurrency(results.delta)} vs fair value)`;
+      hoodScore.textContent = `${results.neighborhood.toFixed(1)} / 10`;
+      hoodLabel.textContent = `Neighborhood confidence from comparable-buyer behavior`;
+      payment.textContent = `${toCurrency(results.monthlyPayment)}/mo`;
+      offerRange.textContent = `${toCurrency(results.competitiveFloor)} to ${toCurrency(results.competitiveCeil)}`;
+      offerNote.textContent = `Range tuned for ${results.marketTone} U.S. micro-market conditions.`;
+      analyzedUrl.textContent = `Analyzed URL: ${urlString}`;
+      renderRiskFlags(results);
+      renderActions(results);
     }
 
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        renderIntent(button.dataset.intent);
-      });
-    });
-
-    assistantForm.addEventListener("submit", (event) => {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const prompt = assistantInput.value.trim();
-      if (!prompt) return;
-      assistantResponse.textContent = answerQuery(prompt);
-      assistantInput.value = "";
+      const urlString = input.value.trim();
+      if (!urlString) return;
+
+      try {
+        const results = analyze(urlString);
+        render(results, urlString);
+        localStorage.setItem("lastListingUrl", urlString);
+      } catch {
+        analyzedUrl.textContent = "Please enter a valid listing URL that starts with http:// or https://";
+      }
     });
 
-    const savedIntent = localStorage.getItem("preferredIntent");
-    if (savedIntent && intentData[savedIntent]) {
-      renderIntent(savedIntent);
-    } else {
-      renderIntent("tour");
+    const lastUrl = localStorage.getItem("lastListingUrl");
+    if (lastUrl) {
+      input.value = lastUrl;
+      try {
+        render(analyze(lastUrl), lastUrl);
+      } catch {
+        localStorage.removeItem("lastListingUrl");
+      }
     }
   </script>
 </body>
