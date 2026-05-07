@@ -1,1 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud Agent Prompt Engineer</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #121a2f;
+        --panel-2: #18233f;
+        --text: #e7ecff;
+        --muted: #9fb0de;
+        --accent: #6ea8fe;
+        --danger: #ff6b7a;
+        --ok: #4dd39f;
+        --warn: #ffc95d;
+        --border: #2a3a64;
+      }
 
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: linear-gradient(180deg, #0a0f1e 0%, #0f1730 50%, #0b1020 100%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .shell {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+      }
+
+      .subtitle {
+        margin: 0 0 28px;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      @media (min-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .panel {
+        background: color-mix(in srgb, var(--panel) 86%, black 14%);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .panel h2 {
+        margin-top: 0;
+        font-size: 1.05rem;
+      }
+
+      .field {
+        margin-bottom: 12px;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--panel-2);
+        color: var(--text);
+        padding: 10px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      .checkboxes {
+        display: grid;
+        gap: 8px;
+      }
+
+      .checkboxes label {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+      }
+
+      .checkboxes input {
+        width: auto;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      button {
+        border: 1px solid var(--border);
+        color: var(--text);
+        background: #213564;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button:hover {
+        filter: brightness(1.1);
+      }
+
+      button.secondary {
+        background: #1b2848;
+      }
+
+      .output {
+        white-space: pre-wrap;
+        background: #0b1326;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        min-height: 210px;
+        padding: 12px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        line-height: 1.4;
+        margin-top: 8px;
+      }
+
+      .score-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .score {
+        font-weight: 700;
+      }
+
+      .score.ok {
+        color: var(--ok);
+      }
+
+      .score.warn {
+        color: var(--warn);
+      }
+
+      .score.bad {
+        color: var(--danger);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 4px 9px;
+        font-size: 0.78rem;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <h1>Cloud Agent Prompt Engineer</h1>
+      <p class="subtitle">
+        Build high-performance Cursor Cloud Agent prompts with consistent structure, constraints, and acceptance criteria.
+      </p>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>1) Agent configuration</h2>
+          <div class="field">
+            <label for="template">Template</label>
+            <select id="template"></select>
+          </div>
+          <div class="field">
+            <label for="role">Agent role</label>
+            <input id="role" placeholder="e.g., Senior full-stack Cloud Agent" />
+          </div>
+          <div class="field">
+            <label for="goal">Primary objective</label>
+            <textarea id="goal" placeholder="What should the agent deliver?"></textarea>
+          </div>
+          <div class="field">
+            <label for="context">Context and references</label>
+            <textarea id="context" placeholder="Repo paths, issue links, stack notes, prior attempts"></textarea>
+          </div>
+          <div class="field">
+            <label for="deliverables">Expected deliverables</label>
+            <textarea id="deliverables" placeholder="Code changes, tests, docs, migration notes, PR details"></textarea>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>2) Efficiency tuning</h2>
+          <div class="field">
+            <label for="risk">Risk level</label>
+            <select id="risk">
+              <option value="low">Low (localized edits)</option>
+              <option value="medium" selected>Medium (multi-file changes)</option>
+              <option value="high">High (architectural/system-wide)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="autonomy">Autonomy style</label>
+            <select id="autonomy">
+              <option value="high" selected>High autonomy, minimal check-ins</option>
+              <option value="balanced">Balanced autonomy with brief updates</option>
+              <option value="strict">Strict checkpoints before risky operations</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="constraints">Execution constraints</label>
+            <div class="checkboxes" id="constraints"></div>
+          </div>
+          <div class="field">
+            <label for="tooling">Tooling preferences</label>
+            <div class="checkboxes" id="tooling"></div>
+          </div>
+          <div class="field">
+            <label for="dod">Definition of done</label>
+            <textarea id="dod" placeholder="Acceptance criteria as bullet points, one per line"></textarea>
+          </div>
+          <div class="actions">
+            <button id="generate">Generate optimized prompt</button>
+            <button id="copy" class="secondary">Copy prompt</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="grid" style="margin-top: 16px;">
+        <article class="panel">
+          <h2>3) Generated prompt</h2>
+          <div class="output" id="output"></div>
+        </article>
+        <article class="panel">
+          <h2>4) Prompt quality analyzer</h2>
+          <div class="score-row">
+            <span class="pill">Quality score</span>
+            <span id="score" class="score bad">0 / 100</span>
+          </div>
+          <ul id="feedback"></ul>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const templates = {
+        "Feature implementation": {
+          role: "Senior software Cloud Agent",
+          goal: "Implement the requested feature end-to-end in the existing codebase with tests and documentation.",
+          context: "Reference issue, current architecture, and any touched modules.",
+          deliverables: "- Working code changes\n- Automated tests\n- Updated docs\n- Clear PR summary",
+          dod: "- Feature behavior matches specification\n- Edge cases covered\n- Tests pass in CI\n- No unexplained regressions"
+        },
+        "Bug investigation and fix": {
+          role: "Debug-focused Cloud Agent",
+          goal: "Reproduce the bug, identify root cause, implement a minimal-risk fix, and validate it.",
+          context: "Include reproduction steps, stack traces, failing tests, and historical context.",
+          deliverables: "- Root-cause explanation\n- Code fix\n- Regression test\n- Verification notes",
+          dod: "- Bug reproducible before and resolved after\n- Regression test added\n- Related flows still pass"
+        },
+        "Refactor/perf optimization": {
+          role: "Performance and maintainability Cloud Agent",
+          goal: "Improve maintainability/performance without changing external behavior.",
+          context: "Call out bottlenecks, profiling data, and modules to keep stable.",
+          deliverables: "- Refactored code with rationale\n- Benchmarks or comparative evidence\n- Migration notes if needed",
+          dod: "- Behavior unchanged\n- Performance or readability measurably improved\n- Tests updated and passing"
+        },
+        "PR review and hardening": {
+          role: "Code review Cloud Agent",
+          goal: "Review changes for correctness, risk, and missing tests; propose concrete improvements.",
+          context: "PR links, changed files, domain constraints.",
+          deliverables: "- Prioritized findings\n- Suggested fixes\n- Test gap analysis",
+          dod: "- Critical issues identified and addressed\n- Risk and residual gaps documented"
+        }
+      };
+
+      const constraints = [
+        "Avoid broad codebase scans unless needed",
+        "Prefer targeted edits and minimal diffs",
+        "Preserve existing style and architecture",
+        "Do not introduce new dependencies unless justified",
+        "Add tests for behavior changes",
+        "Document assumptions and open risks",
+        "Commit in logical units with clear messages",
+        "Push branch and update/create PR before final summary"
+      ];
+
+      const tooling = [
+        "Use ripgrep for code search",
+        "Use file-read tools before patching",
+        "Run tests only relevant to touched areas",
+        "Capture command output for verification",
+        "Use checklists to avoid missing acceptance criteria"
+      ];
+
+      const ids = {
+        template: document.getElementById("template"),
+        role: document.getElementById("role"),
+        goal: document.getElementById("goal"),
+        context: document.getElementById("context"),
+        deliverables: document.getElementById("deliverables"),
+        risk: document.getElementById("risk"),
+        autonomy: document.getElementById("autonomy"),
+        constraints: document.getElementById("constraints"),
+        tooling: document.getElementById("tooling"),
+        dod: document.getElementById("dod"),
+        output: document.getElementById("output"),
+        feedback: document.getElementById("feedback"),
+        score: document.getElementById("score"),
+        generate: document.getElementById("generate"),
+        copy: document.getElementById("copy")
+      };
+
+      function mountCheckboxes(root, list, groupName) {
+        list.forEach((item, index) => {
+          const id = `${groupName}-${index}`;
+          const wrap = document.createElement("label");
+          const box = document.createElement("input");
+          box.type = "checkbox";
+          box.id = id;
+          box.checked = true;
+          box.value = item;
+          wrap.appendChild(box);
+          wrap.appendChild(document.createTextNode(item));
+          root.appendChild(wrap);
+        });
+      }
+
+      function selectedValues(root) {
+        return [...root.querySelectorAll("input:checked")].map((el) => el.value);
+      }
+
+      function fillFromTemplate(name) {
+        const data = templates[name];
+        if (!data) return;
+        ids.role.value = data.role;
+        ids.goal.value = data.goal;
+        ids.context.value = data.context;
+        ids.deliverables.value = data.deliverables;
+        ids.dod.value = data.dod;
+      }
+
+      function linesFromText(text, fallback) {
+        const lines = text
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .map((line) => (line.startsWith("-") ? line : `- ${line}`));
+        return lines.length ? lines : fallback;
+      }
+
+      function buildPrompt() {
+        const role = ids.role.value.trim();
+        const goal = ids.goal.value.trim();
+        const context = ids.context.value.trim();
+        const deliverables = linesFromText(ids.deliverables.value, ["- Provide concrete deliverables"]);
+        const dod = linesFromText(ids.dod.value, ["- Explicitly define acceptance criteria"]);
+        const chosenConstraints = selectedValues(ids.constraints);
+        const chosenTooling = selectedValues(ids.tooling);
+
+        const prompt = [
+          "You are a Cursor Cloud Agent optimized for execution quality and token efficiency.",
+          "",
+          "## Mission",
+          `Role: ${role || "Specialized Cloud Agent"}`,
+          `Objective: ${goal || "Deliver the requested task end-to-end."}`,
+          "",
+          "## Context",
+          context || "No additional context provided. Gather the minimum required context before editing.",
+          "",
+          "## Deliverables",
+          ...deliverables,
+          "",
+          "## Execution Strategy",
+          `- Risk profile: ${ids.risk.value}`,
+          `- Autonomy mode: ${ids.autonomy.value}`,
+          "- Start with a concise plan, then execute directly.",
+          "- Keep updates brief and action-focused.",
+          "",
+          "## Constraints",
+          ...chosenConstraints.map((c) => `- ${c}`),
+          "",
+          "## Tooling Guidance",
+          ...chosenTooling.map((t) => `- ${t}`),
+          "",
+          "## Definition of Done",
+          ...dod,
+          "",
+          "## Output Format",
+          "- Summary of implemented changes",
+          "- Validation performed (commands + outcomes)",
+          "- Remaining risks or follow-ups (if any)",
+          "",
+          "If requirements are ambiguous, make the smallest safe assumption and continue, documenting it clearly."
+        ].join("\n");
+
+        return prompt;
+      }
+
+      function scorePrompt(prompt) {
+        let score = 0;
+        const notes = [];
+        const has = (label, pass, good, bad, points) => {
+          if (pass) {
+            score += points;
+            notes.push(`+ ${label}: ${good}`);
+          } else {
+            notes.push(`- ${label}: ${bad}`);
+          }
+        };
+
+        has("Clear objective", ids.goal.value.trim().length > 20, "Specific task objective found", "Objective is too vague or empty", 20);
+        has("Actionable deliverables", ids.deliverables.value.trim().length > 15, "Deliverables are defined", "List expected outputs explicitly", 15);
+        has("Definition of done", ids.dod.value.trim().length > 10, "Acceptance criteria included", "Add measurable acceptance criteria", 20);
+        has("Context richness", ids.context.value.trim().length > 20, "Useful context provided", "Add repo paths, constraints, and references", 15);
+        has("Guardrails", selectedValues(ids.constraints).length >= 4, "Execution constraints selected", "Choose at least 4 constraints", 10);
+        has("Tool guidance", selectedValues(ids.tooling).length >= 3, "Tooling recommendations selected", "Pick at least 3 tooling rules", 10);
+        has("Prompt size", prompt.length >= 350 && prompt.length <= 3000, "Prompt length is efficient", "Prompt is too short or too long", 10);
+
+        score = Math.max(0, Math.min(100, score));
+        return { score, notes };
+      }
+
+      function renderScore(meta) {
+        ids.score.textContent = `${meta.score} / 100`;
+        ids.score.className = "score " + (meta.score >= 80 ? "ok" : meta.score >= 55 ? "warn" : "bad");
+        ids.feedback.innerHTML = "";
+        meta.notes.forEach((note) => {
+          const li = document.createElement("li");
+          li.textContent = note;
+          ids.feedback.appendChild(li);
+        });
+      }
+
+      Object.keys(templates).forEach((name) => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        ids.template.appendChild(option);
+      });
+
+      mountCheckboxes(ids.constraints, constraints, "constraint");
+      mountCheckboxes(ids.tooling, tooling, "tool");
+      fillFromTemplate(Object.keys(templates)[0]);
+
+      ids.template.addEventListener("change", () => {
+        fillFromTemplate(ids.template.value);
+        ids.generate.click();
+      });
+
+      ids.generate.addEventListener("click", () => {
+        const prompt = buildPrompt();
+        ids.output.textContent = prompt;
+        renderScore(scorePrompt(prompt));
+      });
+
+      ids.copy.addEventListener("click", async () => {
+        const text = ids.output.textContent.trim();
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          ids.copy.textContent = "Copied";
+          setTimeout(() => (ids.copy.textContent = "Copy prompt"), 1200);
+        } catch (_err) {
+          ids.copy.textContent = "Copy failed";
+          setTimeout(() => (ids.copy.textContent = "Copy prompt"), 1200);
+        }
+      });
+
+      ids.generate.click();
+    </script>
+  </body>
+</html>
